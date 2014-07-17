@@ -65,6 +65,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'scrooloose/syntastic'
 NeoBundleLazy 'klen/python-mode', {'autoload': {'filetypes': ['python']}}
 NeoBundle'jmcantrell/vim-virtualenv'
+NeoBundle 'mitsuhiko/vim-jinja'
 
 " Show indent lines
 NeoBundleLazy 'Yggdroot/indentLine', {'autoload': {'filetypes': ['python']}}
@@ -289,7 +290,7 @@ nmap <silent><Leader>et :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 " Toggle line numbers 
 "--------------------------------------------------------------------------------
 
-nnoremap <silent><Leader>n :call ToggleRelativeAbsoluteNumber()<CR>
+nnoremap <silent><Leader>l :call ToggleRelativeAbsoluteNumber()<CR>
 function! ToggleRelativeAbsoluteNumber()
   if !&number && !&relativenumber
       set number
@@ -377,6 +378,11 @@ nnoremap <silent><Leader>K :bd<CR>
 set foldmethod=indent
 set foldlevel=1000
 
+"--------------------------------------------------------------------------------
+" Jinja
+"--------------------------------------------------------------------------------
+
+au BufRead,BufNewFile */templates/*.html setlocal filetype=htmljinja
 
 "--------------------------------------------------------------------------------
 " PythonMode 
