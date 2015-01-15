@@ -1,6 +1,4 @@
-##source ~/.autoenv/activate.sh
 ##export SHELL='/bin/zsh'
-#source /usr/local/opt/autoenv/activate.sh
 
 source /usr/local/bin/virtualenvwrapper.sh
 source ~/.tmuxinator/bin/tmuxinator.zsh
@@ -82,5 +80,4 @@ export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
-
-source /usr/local/bin/activate.sh
+source /usr/local/opt/autoenv/activate.sh
