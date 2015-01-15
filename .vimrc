@@ -31,7 +31,7 @@ endif
 if has('vim_starting')
     set rtp+=$HOME/.vim/bundle/neobundle.vim/
 endif
-call neobundle#rc(expand($HOME.'/.vim/bundle/'))
+call neobundle#begin(expand($HOME.'/.vim/bundle/'))
   
 "--------------------------------------------------------------------------------
 " Bundles
@@ -81,6 +81,8 @@ NeoBundle 'Raimondi/delimitMate'
 
 NeoBundleLazy 'vim-scripts/zoomwintab.vim', {'autoload' :
             \{'commands' : 'ZoomWinTabToggle'}}
+
+call neobundle#end()
 
 " First-time plugins installation
 if iCanHazNeoBundle == 0
@@ -392,6 +394,12 @@ let g:pymode = 1
 let g:pymode_indent = 1
 let g:pymode_folding = 1
 
+" Disable Rope
+let g:pymode_rope = 0
+
+" PEP8 ident
+let g:pymode_indent = 1
+
 " Code run
 let g:pymode_run = 1
 let g:pymode_run_bind = '<leader>r'
@@ -507,9 +515,9 @@ let g:syntastic_always_populate_loc_list = 1
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = 0
 " Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_smart_case = 0
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 2
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
