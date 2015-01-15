@@ -1,0 +1,32 @@
+# ~/.tmuxinator/maildocker.yml
+
+name: maildocker
+root: ~/
+
+# Optional tmux socket
+# socket_name: foo
+
+    
+pre_window: cd /Users/ssjunior/dev/maildocker/maildocker-be
+
+# Runs before everything. Use it to start daemons etc.
+# pre: sudo /etc/rc.d/mysqld start
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+# tmux_options: -f ~/.tmux.mac.conf
+
+# Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
+# tmux_command: byobu
+
+windows:
+  - server: 
+      layout: '0ab6,123x31,0,0{61x31,0,0,1,61x31,62,0,2}'
+      panes:
+        - ./init.sh 8000
+        - ./celery.dev.sh
+  - editor: 
+  - editor: 
+  - editor: 
