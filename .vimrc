@@ -1,23 +1,27 @@
-"--------------------------------------------------------------------------------
-"            _             _                  _                    
-"   ___ ___ (_)_   _ _ __ (_) ___  _ ____   _(_)_ __ ___  _ __ ___ 
-"  / __/ __|| | | | | '_ \| |/ _ \| '__\ \ / / | '_ ` _ \| '__/ __|
-"  \__ \__ \| | |_| | | | | | (_) | | _ \ V /| | | | | | | | | (__ 
-"  |___/___// |\__,_|_| |_|_|\___/|_|(_) \_/ |_|_| |_| |_|_|  \___|
-"         |__/                                                    
 "
-"--------------------------------------------------------------------------------
+"
+"                        _             _                  _  
+"               ___ ___ (_)_   _ _ __ (_) ___  _ ____   _(_)_ __ ___  _ __ ___ 
+"              / __/ __|| | | | | '_ \| |/ _ \| '__\ \ / / | '_ ` _ \| '__/ __|
+"              \__ \__ \| | |_| | | | | | (_) | | _ \ V /| | | | | | | | | (__ 
+"              |___/___// |\__,_|_| |_|_|\___/|_|(_) \_/ |_|_| |_| |_|_|  \___|
+"                     |__/                                                    
+"
+"
+"
+" Setup language {{{ ==========================================================
 
-"--------------------------------------------------------------------------------
-" Disable VI compatibility
-"--------------------------------------------------------------------------------
+language en_US.UTF-8           " Solve some plugins incompatibilities
 
-set nocompatible
+" }}}
 
-"--------------------------------------------------------------------------------
-" NeoBundle auto-installation and setup 
-"--------------------------------------------------------------------------------
+" NEOBUNDLE {{{ ===============================================================
 
+set nocompatible             " No to the total compatibility with the ancient vi
+
+" NeoBundle auto-installation and setup {{{
+
+" Auto installing NeoBundle
 let iCanHazNeoBundle=1
 let neobundle_readme=expand($HOME.'/.vim/bundle/neobundle.vim/README.md')
 if !filereadable(neobundle_readme)
@@ -28,138 +32,161 @@ if !filereadable(neobundle_readme)
     let iCanHazNeoBundle=0
 endif
 
+" Call NeoBundle
 if has('vim_starting')
     set rtp+=$HOME/.vim/bundle/neobundle.vim/
 endif
 call neobundle#begin(expand($HOME.'/.vim/bundle/'))
-  
-"--------------------------------------------------------------------------------
-" Bundles
-"--------------------------------------------------------------------------------
 
-" Autocomplete
-NeoBundle 'Shougo/neocomplete'
+" is better if NeoBundle rules NeoBundle (needed!)
+NeoBundle 'Shougo/neobundle.vim'
+" }}}
 
-" Code Snippets
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
+" BUNDLES (plugins administrated by NeoBundle) {{{
 
-NeoBundle 'tpope/vim-commentary'
+" Shougo's way {{{
 
-" My preferred theme
+" Vimproc to asynchronously run commands (NeoBundle, Unite)
+NeoBundle 'Shougo/vimproc', {
+      \ 'build' : {
+      \     'windows' : 'make -f make_mingw32.mak',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
+" }}}
+
+" Colorschemes {{{
+
+" Dark themes
+" Improved terminal version of molokai, almost identical to the GUI one
+NeoBundle 'joedicastro/vim-molokai256'
 NeoBundle 'tomasr/molokai'
 
-" Auto install of Bundles 
-NeoBundle 'Shougo/neobundle.vim'
+" }}}
 
+" Unite {{{
+
+" NeoBundleLazy 'Shougo/unite.vim'
+
+"}}}
+
+" DCVS {{{
+NeoBundle 'airblade/vim-gitgutter'
+ 
+" Git
+" NeoBundleLazy 'tpope/vim-fugitive'
+ 
+" }}}
+
+" Python {{{
+
+" A Python plugin
+NeoBundleLazy 'klen/python-mode', {'autoload': {'filetypes': ['python']}}
+
+" Rope
+NeoBundleLazy 'python-rope/ropevim'
+
+" }}}
+
+" File navigation {{{
+
+NeoBundleLazy 'ctrlpvim/ctrlp.vim'
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
+" }}}
+
+" Code Snippets {{{
+ 
+" Autocompletion
+NeoBundle 'Shougo/neocomplete' 
+NeoBundle 'Shougo/neosnippet' 
+NeoBundle 'Shougo/neosnippet-snippets'
+ 
+" }}}
+
+" Syntax {{{
+
+NeoBundleLazy 'elzr/vim-json', {'filetypes' : 'json'}
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'vim-scripts/SyntaxRange'
+
+" }}}
+
+" Text edition {{{
+
+" Show marks
+" NeoBundle 'kshenoy/vim-signature'
+
+" Markdown
+NeoBundle 'tpope/vim-markdown'
+
+" Autocompletion of (, [, {, ', ", ...
+NeoBundle 'Raimondi/delimitMate'
+
+" to surround vim objects with a pair of identical chars
+NeoBundle 'tpope/vim-surround'
+
+" extend repetitions by the 'dot' key
+NeoBundle 'tpope/vim-repeat'
+
+" toggle comments
+NeoBundle 'tpope/vim-commentary'
+
+" browse the vim undo tree
 NeoBundleLazy 'sjl/gundo.vim', { 'autoload' : {'commands': 'GundoToggle'}}
 
-" Git
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'airblade/vim-gitgutter'
+" easymotion
+NeoBundle 'Lokaltog/vim-easymotion'
 
-" Status line whit powerline
-NeoBundle 'bling/vim-airline'
+" }}}
 
-" Python coding
-NeoBundle 'scrooloose/syntastic'
-NeoBundleLazy 'klen/python-mode', {'autoload': {'filetypes': ['python']}}
-NeoBundle'jmcantrell/vim-virtualenv'
-NeoBundle 'mitsuhiko/vim-jinja'
+" GUI {{{
+
+" A better looking status line
+NeoBundle 'vim-airline/vim-airline'
+NeoBundle 'vim-airline/vim-airline-themes'
 
 " Show indent lines
 NeoBundleLazy 'Yggdroot/indentLine', {'autoload': {'filetypes': ['python']}}
-
-" Easy move in document
-NeoBundle 'Lokaltog/vim-easymotion'
-
-" Vimrepeat
-NeoBundle 'tpope/vim-repeat'
-
-" Insert delimiters autmagically {} () []
-NeoBundle 'Raimondi/delimitMate'
-
-NeoBundleLazy 'vim-scripts/zoomwintab.vim', {'autoload' :
-            \{'commands' : 'ZoomWinTabToggle'}}
+ 
+" }}}
 
 call neobundle#end()
+
+" END BUNDLES }}}
+
+" Auto install the Plugins {{{
 
 " First-time plugins installation
 if iCanHazNeoBundle == 0
     echo "Installing Bundles, please ignore key map error messages"
     echo ""
-    :NeoBundleInstall
+    set nomore
+    NeoBundleInstall
 endif
 
 " Check if all of the plugins are already installed, in other case ask if we
 " want to install them (useful to add plugins in the .vimrc)
 NeoBundleCheck
 
-filetype plugin indent on      " Indent and plugins by filetype
- 
-"--------------------------------------------------------------------------------
-" Set Leader mapping
-"--------------------------------------------------------------------------------
+" }}}
 
+filetype plugin indent on      " Indent and plugins by filetype
+
+" END NEOBUNDLE }}}
+
+" VIM Setup {{{ ===============================================================
+
+" <Leader> & <LocalLeader> mapping {{{
+
+" let mapleader = "\<Space>"
 let mapleader=','
 let maplocalleader= ' '
 
-"--------------------------------------------------------------------------------
-" Backups 
-"--------------------------------------------------------------------------------
- 
-" Make a dir if no exists 
+" }}}
 
-function! MakeDirIfNoExists(path)
-    if !isdirectory(expand(a:path))
-        call mkdir(expand(a:path), "p")
-    endif
-endfunction
-
-set backup
-set noswapfile
-set backupdir=$HOME/.vim/tmp/backup/
-set undodir=$HOME/.vim/tmp/undo/
-set directory=$HOME/.vim/tmp/swap/
-set viminfo+=n$HOME/.vim/tmp/viminfo
-
-" make this dirs if no exists previously
-silent! call MakeDirIfNoExists(&undodir)
-silent! call MakeDirIfNoExists(&backupdir)
-silent! call MakeDirIfNoExists(&directory)
-
-"--------------------------------------------------------------------------------
-" Enable mouse
-"--------------------------------------------------------------------------------
-
-set mouse=a
- 
-"--------------------------------------------------------------------------------
-" Tabs, space and wrapping
-"--------------------------------------------------------------------------------
-
-set expandtab                  " spaces instead of tabs
-set tabstop=4                  " a tab = four spaces
-set shiftwidth=4               " number of spaces for auto-indent
-set softtabstop=4              " a soft-tab of four spaces
-set autoindent                 " set on the auto-indent
-
-"-----------------------------------------------------------
-" Wildmenu
-"-----------------------------------------------------------
-
-set wildmenu                        " Command line autocompletion
-set wildmode=list:longest,full      " Shows all the options
-
-set wildignore+=*.sw?              " Vim swap files
-set wildignore+=*.bak             " Backup files
-set wildignore+=*.pyc               " Python byte code
-
-"--------------------------------------------------------------------------------
-" Default Config
-"--------------------------------------------------------------------------------
-
-syntax enable                  " enable the syntax highlight
 scriptencoding utf-8
 set encoding=utf-8              " setup the encoding to UTF-8
 set ls=2                        " status line always visible
@@ -182,41 +209,69 @@ set autoread                    " update a open file edited outside of Vim
 set ttimeoutlen=0               " toggle between modes almost instantly
 set backspace=indent,eol,start  " defines the backspace key behavior
 set virtualedit=all             " to edit where there is no actual character
+set more                        " to show pages using `more` in command outpouts
 
-"--------------------------------------------------------------------------------
-" Return to last edit position when opening files (You want this!)
-"--------------------------------------------------------------------------------
+" }}}
 
-autocmd BufReadPost *
- \ if line("'\"") > 0 && line("'\"") <= line("$") |
- \   exe "normal! g`\"" |
- \ endif
+" Searching {{{
 
-"--------------------------------------------------------------------------------
-" Searching 
-"--------------------------------------------------------------------------------
- 
 set incsearch                   " incremental searching
 set showmatch                   " show pairs match
 set hlsearch                    " highlight search results
 set smartcase                   " smart case ignore
 set ignorecase                  " ignore case letters
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+" }}}
 
-"--------------------------------------------------------------------------------
-" History and permanent undo levels
-"--------------------------------------------------------------------------------
+" History and permanent undo levels {{{
 
-set history=1000                
+set history=100
+set undoreload=100
 set undofile
-set undoreload=1000
 
-"--------------------------------------------------------------------------------
-" Tabs, space and wrapping
-"--------------------------------------------------------------------------------
+" }}}
+
+" Make a dir if no exists {{{
+
+function! MakeDirIfNoExists(path)
+    if !isdirectory(expand(a:path))
+        call mkdir(expand(a:path), "p")
+    endif
+endfunction
+
+" }}}
+
+" Backups {{{
+
+set backup
+set noswapfile
+set backupdir=$HOME/.vim/tmp/backup/
+set undodir=$HOME/.vim/tmp/undo/
+set directory=$HOME/.vim/tmp/swap/
+set viminfo+=n$HOME/.vim/tmp/viminfo
+
+" make this dirs if no exists previously
+silent! call MakeDirIfNoExists(&undodir)
+silent! call MakeDirIfNoExists(&backupdir)
+silent! call MakeDirIfNoExists(&directory)
+
+" }}}
+
+" Wildmenu {{{
+
+" set wildmenu                        " Command line autocompletion
+" set wildmode=list:longest,full      " Shows all the options
+
+" set wildignore+=*.sw?                            " Vim swap files
+" set wildignore+=*.bak,*.?~,*.??~,*.???~,*.~      " Backup files
+" set wildignore+=*.luac                           " Lua byte code
+" set wildignore+=*.jar                            " java archives
+" set wildignore+=*.pyc                            " Python byte code
+" set wildignore+=*.stats                          " Pylint stats
+
+" }}}
+
+" Tabs, space and wrapping {{{
 
 set expandtab                  " spaces instead of tabs
 set tabstop=4                  " a tab = four spaces
@@ -224,73 +279,100 @@ set shiftwidth=4               " number of spaces for auto-indent
 set softtabstop=4              " a soft-tab of four spaces
 set autoindent                 " set on the auto-indent
 
-"--------------------------------------------------------------------------------
-" Show 80 column limit
-"--------------------------------------------------------------------------------
- 
-set formatoptions=qrn1ct
-set textwidth=80
-set colorcolumn=81
+" set formatoptions=qrn1ct
+set textwidth=100
+set colorcolumn=101
 
-"--------------------------------------------------------------------------------
-" Colorscheme 
-"--------------------------------------------------------------------------------
+" function! ToggleWrap()
+"     let s:nowrap_cc_bg = [22, '#005f00']
+"     redir => s:curr_cc_hi
+"     silent hi ColorColumn
+"     redir END
+"     let s:curr_cc_ctermbg = matchstr(s:curr_cc_hi, 'ctermbg=\zs.\{-}\s\ze\1')
+"     let s:curr_cc_guibg = matchstr(s:curr_cc_hi, 'guibg=\zs.\{-}\_$\ze\1')
+"     if s:curr_cc_ctermbg != s:nowrap_cc_bg[0]
+"         let g:curr_cc_ctermbg = s:curr_cc_ctermbg
+"     endif
+"     if s:curr_cc_guibg != s:nowrap_cc_bg[1]
+"         let g:curr_cc_guibg = s:curr_cc_guibg
+"     endif
+"     if &textwidth == 80
+"         set textwidth=0
+"         exec 'hi ColorColumn ctermbg='.s:nowrap_cc_bg[0].
+"                     \' guibg='.s:nowrap_cc_bg[1]
+"     elseif &textwidth == 0
+"         set textwidth=80
+"         exec 'hi ColorColumn ctermbg='.g:curr_cc_ctermbg.
+"                     \' guibg='.g:curr_cc_guibg
+"     endif
+" endfunction
 
-let g:rehash256 = 1
-colorscheme molokai
+" nmap <silent><Leader>ew :call ToggleWrap()<CR>
 
-"--------------------------------------------------------------------------------
-" Autoload configuration when this file changes ($MYVIMRC)
-"--------------------------------------------------------------------------------
+" }}}
 
-autocmd! BufWritePost vimrc source %
+" Ok, a vim for men, get off the cursor keys {{{
 
-"--------------------------------------------------------------------------------
-" Powerline Font
-"--------------------------------------------------------------------------------
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
 
-set guifont=Dejavu\ Sans\ Mono\ for\ Powerline\ 30
+" }}}
 
-"--------------------------------------------------------------------------------
-" Airline
-"--------------------------------------------------------------------------------
+" Colorscheme {{{
 
-set noshowmode
-let g:airline_theme='powerlineish'
-let g:airline_enable_branch=1
-let g:airline_powerline_fonts=1
-let g:airline_detect_whitespace = 1
-let g:airline#extensions#hunks#non_zero_only = 1
+syntax enable                  " enable the syntax highlight
+set background=dark            " set a dark background
+set t_Co=256                   " 256 colors for the terminal
+if has('gui_running')
+    colorscheme molokai
+else
+    colorscheme molokai256
+endif
 
-"--------------------------------------------------------------------------------
-" Show hidden chars
-"--------------------------------------------------------------------------------
+" }}}
 
-nmap <Leader>eh :set list!<CR>
-set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶
+" Font {{{
 
-"--------------------------------------------------------------------------------
-" ZoomWinTabToggle
-"--------------------------------------------------------------------------------
+set guifont=Dejavu\ Sans\ Mono\ for\ Powerline\ 11
 
-map <Leader>z :ZoomWinTabToggle<CR>
+" }}}
 
-"--------------------------------------------------------------------------------
-" Gundo
-"--------------------------------------------------------------------------------
+" Resize the divisions if the Vim window size changes {{{
 
-nnoremap <Leader>u :GundoToggle<CR>
-let g:gundo_preview_bottom = 1
+au VimResized * exe "normal! \<c-w>="
 
-"--------------------------------------------------------------------------------
-" Delete trailing whitespaces 
-"--------------------------------------------------------------------------------
+" }}}
 
-nmap <silent><Leader>et :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+" New windows {{{
 
-"--------------------------------------------------------------------------------
-" Toggle line numbers 
-"--------------------------------------------------------------------------------
+nnoremap <Leader>v <C-w>v
+nnoremap <Leader>h <C-w>s
+
+" }}}
+
+" Fast window moves {{{
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" }}}
+
+" Fast window & buffer close and kill {{{
+
+nnoremap <Leader>K <C-w>c
+nnoremap <silent><Leader>k :bd<CR>
+
+" }}}
+
+" Toggle line numbers {{{
 
 nnoremap <silent><Leader>l :call ToggleRelativeAbsoluteNumber()<CR>
 function! ToggleRelativeAbsoluteNumber()
@@ -307,18 +389,86 @@ function! ToggleRelativeAbsoluteNumber()
       set nonumber
       set norelativenumber
   endif
-endfunction                                            
+endfunction
 
+" }}}
 
-"--------------------------------------------------------------------------------
+" Show hidden chars {{{
+
+nmap <Leader>eh :set list!<CR>
+set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶
+
+" }}}
+
+" Folding {{{
+
+set foldmethod=syntax
+
+" Salva folding
+set viewoptions-=options
+augroup vimrc
+    autocmd BufWritePost *
+    \   if expand('%') != '' && &buftype !~ 'nofile'
+    \|      mkview
+    \|  endif
+    autocmd BufRead *
+    \   if expand('%') != '' && &buftype !~ 'nofile'
+    \|      silent loadview
+    \|  endif
+augroup END
+
+" }}}
+
+" Cut/Paste {{{
+
+" to/from the clipboard
+map <Leader>y "*y
+map <Leader>p "*p
+
 " toggle paste mode
-"--------------------------------------------------------------------------------
-
 map <Leader>P :set invpaste<CR>
 
-"--------------------------------------------------------------------------------
+" }}}
+
+" Autoload configuration when this file changes ($MYVIMRC) {{{
+
+autocmd! BufWritePost vimrc source %
+
+" }}}
+
+" Save as root {{{
+
+cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
+
+" }}}
+
+" Quick saving {{{
+
+nmap <silent> <Leader>w :update<CR>
+nmap <silent> <Leader>w :update<CR>
+inoremap jw <esc>:w<CR>
+
+" }}}
+
+" Delete trailing whitespaces {{{
+
+nmap <silent><Leader>et :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" }}}
+
+" CtrlP configuration {{{
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pdf,*.pyc
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+
+" }}}
+
 " Use Ranger as a file explorer {{{
-"--------------------------------------------------------------------------------
 
 fun! RangerChooser()
     exec "silent !ranger --choosefile=/tmp/chosenfile " . expand("%:p:h")
@@ -328,212 +478,205 @@ fun! RangerChooser()
     endif
     redraw!
 endfun
-map <Leader>r :call RangerChooser()<CR>
+map <Leader>x :call RangerChooser()<CR>
+" }}}
 
-"--------------------------------------------------------------------------------
-" Cut/Paste to/from the clipboard
-"--------------------------------------------------------------------------------
+" Toggle the Quickfix window {{{
 
-map <Leader>y "*y
-map <Leader>p "*p
+function! s:QuickfixToggle()
+    for i in range(1, winnr('$'))
+        let bnum = winbufnr(i)
+        if getbufvar(bnum, '&buftype') == 'quickfix'
+            cclose
+            lclose
+            return
+        endif
+    endfor
+    copen
+endfunction
+command! ToggleQuickfix call <SID>QuickfixToggle()
 
-"--------------------------------------------------------------------------------
-" Comment/Uncomment
-"--------------------------------------------------------------------------------
+nnoremap <silent> <Leader>q :ToggleQuickfix<CR>
 
-map <Leader>c gc
+" }}}
 
-"--------------------------------------------------------------------------------
-" Fold/Unfold
-"--------------------------------------------------------------------------------
+" Toggle Mouse {{{
 
-set foldmethod=marker
-map <Leader>f za
+set mouse=a
 
+fun! s:ToggleMouse()
+    if !exists("s:old_mouse")
+        let s:old_mouse = "a"
+    endif
+    if &mouse == ""
+        let &mouse = s:old_mouse
+        echo "Mouse is for Vim (" . &mouse . ")"
+    else
+        let s:old_mouse = &mouse
+        let &mouse=""
+        echo "Mouse is for terminal"
+    endif
+endfunction
 
-" Resize the divisions if the Vim window size changes {{{
+noremap <Leader>mm :call <SID>ToggleMouse()<CR>
+inoremap <Leader>mm <Esc>:call <SID>ToggleMouse()<CR>a
 
-au VimResized * exe "normal! \<c-w>="
+" "}}}
 
-" New windows {{{
+" Basic options {{{
 
-nnoremap <Leader>v <C-w>v
-nnoremap <Leader>h <C-w>s
+" Text statistics {{{
 
-" Fast window moves {{{
+" get the total of lines, words, chars and bytes (and for the current position)
+map <Leader>es g<C-G>
 
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" }}}
 
+" Count lines of code {{{
 
-" Fast window & buffer close and kill {{{
+function! LinesOfCode()
+    echo system('cloc --quiet '.bufname("%"))
+endfunction
 
-nnoremap <Leader>k <C-w>c
-nnoremap <silent><Leader>K :bd<CR>
+"}}}
 
-"--------------------------------------------------------------------------------
-" Code Folding 
-"--------------------------------------------------------------------------------
+" Toggle the search results highlighting {{{
 
-set foldmethod=indent
-set foldlevel=1000
+map <silent><Leader>eq :set invhlsearch<CR>
 
-"--------------------------------------------------------------------------------
-" Jinja
-"--------------------------------------------------------------------------------
+" }}}
 
-au BufRead,BufNewFile */templates/*.html setlocal filetype=htmljinja
+" Quick exiting without save {{{
 
-"--------------------------------------------------------------------------------
-" PythonMode 
-"--------------------------------------------------------------------------------
+nnoremap <Leader>`` :qa!<CR>
 
-let g:pymode = 1 
-let g:pymode_indent = 1
-let g:pymode_folding = 1
+" }}}
 
-" Disable Rope
-let g:pymode_rope = 0
+" Fast buffer jump, home, end, save, esc {{{
 
-" PEP8 ident
-let g:pymode_indent = 1
+nnoremap p[ <esc>:bn<cr>
+nnoremap [p <esc>:bp<cr>
+" inoremap zz <esc>ui
+" inoremap hh <esc>0i
+inoremap jk <esc>
+" inoremap <esc> <nop>
 
-" Code run
-let g:pymode_run = 1
-let g:pymode_run_bind = '<leader>r'
+" }}}
 
-" Breakpoints
-let g:pymode_breakpoint = 1
+" Execution permissions by default to shebang (#!) files {{{
 
-" Breakpint bind key
-let g:pymode_breakpoint_bind = '<leader>b'
+augroup shebang_chmod
+  autocmd!
+  autocmd BufNewFile  * let b:brand_new_file = 1
+  autocmd BufWritePost * unlet! b:brand_new_file
+  autocmd BufWritePre *
+        \ if exists('b:brand_new_file') |
+        \   if getline(1) =~ '^#!' |
+        \     let b:chmod_post = '+x' |
+        \   endif |
+        \ endif
+  autocmd BufWritePost,FileWritePost *
+        \ if exists('b:chmod_post') && executable('chmod') |
+        \   silent! execute '!chmod '.b:chmod_post.' "<afile>"' |
+        \   unlet b:chmod_post |
+        \ endif
+augroup END
 
-" Manually set breakpoint command (leave empty for automatic detection)
-let g:pymode_breakpoint_cmd = ''
+" }}}
 
-" Code check
-let g:pymode_lint = 1
+" Load matchit by default {{{
 
-" Check code on every save (if file has been modified)  
-let g:pymode_lint_on_write = 1
-let g:pymode_lint_unmodified = 0
-
-" Check code when editing (on the fly)                        
-let g:pymode_lint_on_fly = 1
-
-" Show error message if cursor placed at the error line  
-let g:pymode_lint_message = 1
-
-" Default code checkers (you could set several)         
-" Values may be chosen from: `pylint`, `pep8`, `mccabe`, `pep257`, `pyflakes`.
-let g:pymode_lint_checkers = ['pylynt', 'pyflakes', 'pep8', 'mccabe']
-
-" Skip errors and warnings                                
-" E.g. "E501,W002", "E2,W" (Skip all Warnings and Errors that starts with E2) and etc
-"let g:pymode_lint_ignore = "E501,W"
-
-" Select some error or warnings.
-" By example you disable all warnings starting from 'W', but want to see warning
-" 'W0011' and warning 'W430'
-"let g:pymode_lint_select = "E501,W0011,W430"
-
-" Sort errors by relevance
-" If not empty, errors will be sort by defined relevance
-" E.g. let g:pymode_lint_sort = ['E', 'C', 'I']  " Errors first 'E',
-" after them 'C' and ...
-let g:pymode_lint_sort = ['E', 'C', 'I']
-
-" Auto open cwindow (quickfix) if any errors have been found
-let g:pymode_lint_cwindow = 1
-let g:pymode_quickfix_minheight = 3
-let g:pymode_quickfix_maxheight = 6 
-
-" Place error |signs|
-let g:pymode_lint_signs = 1
-
-" Definitions for |signs|
-let g:pymode_lint_todo_symbol = 'TD'
-let g:pymode_lint_comment_symbol = 'CC'
-let g:pymode_lint_visual_symbol = '⚡R'
-let g:pymode_lint_error_symbol = '✗E'
-let g:pymode_lint_info_symbol = '⚠I'
-let g:pymode_lint_pyflakes_symbol = '⚡F'
-
-" Set PEP8 options
-let g:pymode_lint_options_pep8 = { 'max_line_length': 80 }   
-
-" Set Pyflakes options                          
-let g:pymode_lint_options_pyflakes = { 'builtins': '_' }
-
-" Set mccabe options                              
-let g:pymode_lint_options_mccabe = { 'complexity': 12 }
-
-" Set pep257 options
-let g:pymode_lint_options_pep257 = {}
-
-" Set pylint options
-let g:pymode_lint_options_pylint = { 'max-line-length': 80 } 
-
-let g:pymode_virtualenv = 0
-
-nmap <silent><Leader>n :PymodeLint<CR>
-
-" Trim unused white spaces on save                  
-let g:pymode_trim_whitespaces = 1
-
-"--------------------------------------------------------------------------------
-" Enable Virtualenv
-"--------------------------------------------------------------------------------
-
-let g:virtualenv_auto_activate = 1
-let g:virtualenv_stl_format = '(%n)'
-
-"--------------------------------------------------------------------------------
-" Syntastic
-"--------------------------------------------------------------------------------
-
-nmap <silent><Leader>N :SyntasticCheck<CR>:Errors<CR>
-
-let g:syntastic_python_pylint_exe = "pylint"
-let g:syntastic_mode_map = { 'mode': 'active',
-            \ 'active_filetypes': [],
-            \ 'passive_filetypes': ['python'] }
-
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_style_error_symbol  = '⚡'
-let g:syntastic_style_warning_symbol  = '⚡'
-
-let g:syntastic_always_populate_loc_list = 1
-
-"--------------------------------------------------------------------------------
-" NeoComplete/Autocomplete
-"--------------------------------------------------------------------------------
-
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 0
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 0
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 2
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-     \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
 endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" }}}
+
+" Make the Y behavior similar to D & C {{{
+
+nnoremap Y y$
+
+" }}}
+
+" END VIM SETUP }}}
+
+" PLUGINS Setup {{{ ===========================================================
+
+" Airline {{{
+
+set noshowmode
+
+let g:airline_theme='powerlineish'
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#detect_whitespace#enabled = 1
+let g:airline_powerline_fonts=1
+let g:airline#extensions#hunks#non_zero_only = 1
+
+let g:airline#extensions#tabline#enabled = 2
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#buffer_min_count = 1
+
+" }}}
+
+" " ColorV {{{
+
+" let g:colorv_cache_file=$HOME.'/.vim/tmp/vim_colorv_cache'
+" let g:colorv_cache_fav=$HOME.'/.vim/tmp/vim_colorv_cache_fav'
+
+" " }}}
+
+" Commentary {{{ -------------------------------------------------------------
+
+nmap <Leader>c <Plug>CommentaryLine
+xmap <Leader>c <Plug>Commentary
+
+augroup plugin_commentary
+    au!
+    au FileType python setlocal commentstring=#%s
+    au FileType htmldjango setlocal commentstring={#\ %s\ #}
+    au FileType puppet setlocal commentstring=#\ %s
+    au FileType xquery setlocal commentstring=(:\ %s\ :)
+augroup END
+
+" }}}
+
+" delimitmate {{{
+
+let delimitMate_expand_space = 1
+
+" }}}
+
+" Gundo {{{ ------------------------------------------------------------------
+
+nnoremap <Leader>u :GundoToggle<CR>
+let g:gundo_preview_bottom = 1
+
+" }}}
+
+" indentLine {{{
+
+map <silent> <Leader>L :IndentLinesToggle<CR>
+let g:indentLine_enabled = 1
+" let g:indentLine_char = '┊'
+let g:indentLine_char = '│'
+let g:indentLine_color_term = 239
+
+" }}}
+
+" Neocomplete {{{
+
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_refresh_always = 1
+let g:neocomplete#max_list = 50
+let g:neocomplete#min_keyword_length = 2
+let g:neocomplete#sources#syntax#min_keyword_length = 1
+let g:neocomplete#data_directory = $HOME.'/.vim/tmp/neocomplete'
+let g:neocomplete#enable_fuzzy_completion = 1
+
+" disable the auto select feature by default to speed up writing without
+" obstacles (is optimal for certain situations)
+let g:neocomplete#enable_auto_select = 1
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()
@@ -543,36 +686,145 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  "return neocomplete#close_popup() . "\<CR>"
+  "return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
   " For no inserting <CR> key.
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
+
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ neocomplete#start_manual_complete()
+
+function! s:check_back_space() "{{{
+let col = col('.') - 1
+return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+
+" neosnippet Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/Dev/vim-snippets/snippets'
+
+let g:neosnippet#scope_aliases = {}
+let g:neosnippet#scope_aliases['python'] = 'django,python'
+
+set completeopt-=preview
+
+" toggle the auto select feature
+function! ToggleNeoComplete()
+  if !g:neocomplete#disable_auto_complete && g:neocomplete#enable_auto_select
+      let g:neocomplete#disable_auto_complete = 0
+      let g:neocomplete#enable_auto_select = 0
+  elseif !g:neocomplete#disable_auto_complete && !g:neocomplete#enable_auto_select
+      let g:neocomplete#disable_auto_complete = 1
+      let g:neocomplete#enable_auto_select = 0
+  elseif g:neocomplete#disable_auto_complete && !g:neocomplete#enable_auto_select
+      let g:neocomplete#disable_auto_complete = 0
+      let g:neocomplete#enable_auto_select = 1
+  endif
+endfunction
+nnoremap <silent><Leader>ea :call ToggleNeoComplete()<CR>
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-" Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+    let g:neocomplete#sources#omni#input_patterns = {}
 endif
 
-"--------------------------------------------------------------------------------
-" EasyMotion
-"--------------------------------------------------------------------------------
+let g:neocomplete#sources#omni#input_patterns.python='[^. \t]\.\w*'
 
+" }}}
+
+" PythonMode {{{ -------------------------------------------------------------
+
+nmap <silent><Leader>n :PymodeLint<CR>
+nmap <silent><Leader>la :PymodeLintAuto<CR>
+
+let g:pymode_breakpoint_bind = '<Leader>B'
+
+let g:pymode_lint = 1
+let g:pymode_lint_on_write = 1
+let g:pymode_lint_checkers = ['pylint']
+
+let g:pymode_options_max_line_length=100
+
+" Skip errors and warnings
+" E.g. "E501,W002", "E2,W" (Skip all Warnings and Errors that starts with E2) and etc
+let g:pymode_lint_ignore = "C0103,C0111,C1001,C0330,E1002,E1101,E1120,E1123,R0902,R0903,R0912,R0913,R0914,R0915,W0142,W0201,W0232"
+
+" Select some error or warnings.
+" By example you disable all warnings starting from 'W', but want to see warning
+" 'W0011' and warning 'W430'
+"let g:pymode_lint_select = "E501,W0011,W430"
+
+let g:pymode_lint_sort = ['E', 'C', 'I']
+
+let g:pymode_virtualenv = 1
+let g:pymode_rope = 0
+
+let g:pymode_rope_completion = 0
+let g:pymode_rope_complete_on_dot = 0
+
+" Trim unused white spaces on save
+let g:pymode_trim_whitespaces = 1
+
+" Auto open cwindow (quickfix) if any errors have been found
+let g:pymode_lint_cwindow = 1
+let g:pymode_quickfix_minheight = 3
+let g:pymode_quickfix_maxheight = 8
+
+" Check code when editing (on the fly)
+let g:pymode_lint_on_fly = 0
+
+" Show error message if cursor placed at the error line
+let g:pymode_lint_message = 1
+
+let g:pymode_indent = 1
+let g:pymode_motion = 1
+
+let g:pymode_folding = 1
+
+" }}}
+
+" Syntastic {{{
+
+nmap <silent><Leader>N :SyntasticCheck<CR>:Errors<CR>
+
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_pylint_args = "--load-plugins pylint_django"
+let g:syntastic_mode_map = { 'mode': 'active',
+            \ 'active_filetypes': [],
+            \ 'passive_filetypes': ['python'] }
+
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+let g:syntastic_style_error_symbol  = '⚡'
+let g:syntastic_style_warning_symbol  = '⚡'
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 1
+
+let g:syntastic_quiet_messages = { "regex": ['missing-docstring', 'bad-continuation', 'no-member'] }
+
+" }}}
+
+" easymotion {{{ -----------------------------------------------------------------
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Bi-directional find motion
@@ -582,3 +834,38 @@ nmap s <Plug>(easymotion-s)
 
 " Turn on case sensitive feature
 let g:EasyMotion_smartcase = 1
+
+" }}}
+
+" last position {{{ --------------------------------------------------------------------------------
+" Return to last edit position when opening files (You want this!)
+"--------------------------------------------------------------------------------
+
+autocmd BufReadPost *
+ \ if line("'\"") > 0 && line("'\"") <= line("$") |
+ \   exe "normal! g`\"" |
+ \ endif
+
+" }}}
+
+" END PLUGINS SETUP }}}
+
+" FILETYPES  {{{ ==============================================================
+
+" DJANGO HTML (Templates) {{{
+
+au BufRead,BufNewFile */templates/*.html setlocal filetype=htmldjango.html
+
+" }}}
+
+" END FILETYPES }}}
+
+" " Other Customizations {{{ ====================================================
+
+" let s:vimcustomfile = $HOME.'/.vim/custom.vim'
+
+" if filereadable(s:vimcustomfile)
+"     exec 'source '.s:vimcustomfile
+" endif
+
+" " }}}

@@ -1,83 +1,63 @@
-##export SHELL='/bin/zsh'
+# load zgen
+source "${HOME}/zgen/zgen.zsh"
+
+# vi style binding
+# bindkey -v
 
 source /usr/local/bin/virtualenvwrapper.sh
-source ~/.tmuxinator/bin/tmuxinator.zsh
+# source ~/.tmuxinator/bin/tmuxinator.zsh
 
 export WORKON_HOME=~/Dev/Envs
 export EDITOR='vim'
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="ssjunior"
-
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+export LC_CTYPE=en_US.UTF-8
 
 alias python2="python"
+alias r='ranger'
+alias vi='vim'
+alias mkvirtualenv2='mkvirtualenv --python=python2'
 
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
-
-# Uncomment this to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment to change how often before auto-updates occur? (in days)
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want to disable command autocorrection
-# DISABLE_CORRECTION="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment following line if you want to disable marking untracked files under
-# VCS as dirty. This makes repository status check for large repositories much,
-# much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment following line if you want to  shown in the command execution time stamp 
-# in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
-# yyyy-mm-dd
 HIST_STAMPS="dd/mm/yyyy"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(django git autojump autoenv brew fabric pip virtualenvwrapper git-flow git-extras celery bower npm)
-
-source $ZSH/oh-my-zsh.sh
+# Set architecture flags
+export ARCHFLAGS="-arch x86_64"
 
 # User configuration
-
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
+# export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 source /usr/local/opt/autoenv/activate.sh
+
+# check if there's no init script
+if ! zgen saved; then
+    echo "Creating a zgen save"
+
+    zgen oh-my-zsh
+
+    # plugins
+    zgen oh-my-zsh plugins/git
+    zgen oh-my-zsh plugins/autojump
+    zgen oh-my-zsh plugins/autoenv
+    zgen oh-my-zsh plugins/brew
+    zgen oh-my-zsh plugins/pip
+    zgen oh-my-zsh plugins/virtualenvwrapper
+    zgen oh-my-zsh plugins/git-flow
+    zgen oh-my-zsh plugins/git-extras
+    zgen oh-my-zsh plugins/celery
+    zgen oh-my-zsh plugins/bower
+    zgen oh-my-zsh plugins/npm
+    zgen oh-my-zsh plugins/sudo
+    zgen oh-my-zsh plugins/command-not-found
+    zgen load zsh-users/zsh-syntax-highlighting         
+#     zgen load /path/to/super-secret-private-plugin
+
+    # completions
+    zgen load zsh-users/zsh-completions src
+
+    # theme
+    zgen oh-my-zsh themes/robbyrussell
+    # zgen load /Users/ssjunior/.oh-my-zsh/themes/ssjunior
+
+    # save all to init script
+    zgen save
+fi
